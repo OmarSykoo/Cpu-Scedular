@@ -6,6 +6,7 @@ import java.util.Scanner;
 import core.ProcessCpu;
 import core.IntervalLists.IntervalList;
 import core.Scedulers.SJFscheduler;
+import gui.DisplayService;
 
 public class Main {
     public static void main(String[] args) {
@@ -81,6 +82,11 @@ public class Main {
             if (exitFlag)
                 break;
             intervals.print();
+            System.out.println("Display Gui ? Y/N : ");
+            if (scanner.nextLine().toLowerCase().equals("y")) {
+                DisplayService displayService = new DisplayService();
+                displayService.CreateDisplay(intervals, processCpus);
+            }
 
         }
         System.out.println("Have a great day :D");
