@@ -6,6 +6,8 @@ public abstract class IntervalCpu {
     public int Pnum;
     public int RemainingBurstTime;
     public String ActionDetail;
+    public int waitingTime;
+    public int turnAroundTime;
 
     public int executedTime() {
         return endTime - startTime;
