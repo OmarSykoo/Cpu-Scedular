@@ -11,10 +11,10 @@ public abstract class IntervalList extends LinkedList<IntervalCpu> {
     public double averageTurnAroundTime = 0;
 
     public void print() {
-        System.out.println(String.format("AWT : %.2f , ATAT : %.2f", averageWaitingTime, averageTurnAroundTime));
         printHeader();
         for (IntervalCpu interval : this) {
             interval.Print();
         }
+        System.out.println(String.format("AWT : %.2f , ATAT : %.2f", averageWaitingTime, averageTurnAroundTime));
     }
 }
