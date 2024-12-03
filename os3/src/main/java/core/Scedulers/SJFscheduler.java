@@ -35,9 +35,8 @@ public class SJFscheduler extends CpuSceduler{
                 }
             }
             if(Q.isEmpty()) {
-                Q.add(sjfprocess.getFirst());
-                time = sjfprocess.getFirst().ArrivalTime;
-                sjfprocess.remove();
+                time = sjfprocess.peek().ArrivalTime;
+                continue;
             }
             ProcessCpu shortestBurst = Q.stream().min(Comparator.comparingInt(proc -> proc.BurstTime)).orElseThrow();
             Q.remove(shortestBurst);

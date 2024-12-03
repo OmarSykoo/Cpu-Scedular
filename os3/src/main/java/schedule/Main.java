@@ -27,7 +27,7 @@ public class Main {
         // processCpus.add(processCpu);
         // }
         String[] TestInput = new String[] {
-                "17 0 4 4",
+                "17 4 4 4",
                 "6 3 9 3",
                 "3 4 3 5",
                 "4 29 8 2" };
@@ -42,12 +42,12 @@ public class Main {
             processCpus.add(processCpu);
         }
         while (true) {
-            System.out.println("1) SJF  SCHEDULAR");
-            System.out.println("2) SRTF SCHEDULAR");
-            System.out.println("3) PRIORITY SCHEDULAR");
-            System.out.println("4) FCAI SCHEDULAR");
+            System.out.println("1) SJF SCHEDULER");
+            System.out.println("2) SRTF SCHEDULER");
+            System.out.println("3) PRIORITY SCHEDULER");
+            System.out.println("4) FCAI SCHEDULER");
             System.err.println("0) Exit");
-            System.out.print("CHOOSE A SCHEDULAR : ");
+            System.out.print("CHOOSE A SCHEDULER: ");
             int choice = 0;
             try {
                 choice = Integer.parseInt(scanner.nextLine());
