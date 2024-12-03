@@ -9,18 +9,33 @@ import core.Scedulers.SJFscheduler;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.print("Enter number of processes : ");
-        Scanner scanner = new Scanner(System.in);
-        // enter the number of process to be taken from user
-        int x = Integer.parseInt(scanner.nextLine());
         LinkedList<ProcessCpu> processCpus = new LinkedList<ProcessCpu>();
-        System.out.println("Enter  : arrivalTime burstTime priority quantum");
-        for (int i = 1; i <= x; i++) {
-            String[] inpuStrings = scanner.nextLine().split(" ");
+        Scanner scanner = new Scanner(System.in);
+        // System.out.print("Enter number of processes : ");
+        // enter the number of process to be taken from user
+        // int x = Integer.parseInt(scanner.nextLine());
+        // System.out.println("Enter : arrivalTime burstTime priority quantum");
+        // for (int i = 1; i <= x; i++) {
+        // String[] inpuStrings = scanner.nextLine().split(" ");
+        // ProcessCpu processCpu = new ProcessCpu();
+        // processCpu.PNum = i;
+        // processCpu.ArrivalTime = Integer.parseInt(inpuStrings[0]);
+        // processCpu.BurstTime = Integer.parseInt(inpuStrings[1]);
+        // processCpu.Priority = Integer.parseInt(inpuStrings[2]);
+        // processCpu.Quantum = Integer.parseInt(inpuStrings[3]);
+        // processCpus.add(processCpu);
+        // }
+        String[] TestInput = new String[] {
+                "17 0 4 4",
+                "6 3 9 3",
+                "10 4 3 5",
+                "4 29 8 2" };
+        for (int i = 0; i < TestInput.length; i++) {
+            String[] inpuStrings = TestInput[i].split(" ");
             ProcessCpu processCpu = new ProcessCpu();
-            processCpu.PNum = i;
-            processCpu.ArrivalTime = Integer.parseInt(inpuStrings[0]);
-            processCpu.BurstTime = Integer.parseInt(inpuStrings[1]);
+            processCpu.PNum = i + 1;
+            processCpu.BurstTime = Integer.parseInt(inpuStrings[0]);
+            processCpu.ArrivalTime = Integer.parseInt(inpuStrings[1]);
             processCpu.Priority = Integer.parseInt(inpuStrings[2]);
             processCpu.Quantum = Integer.parseInt(inpuStrings[3]);
             processCpus.add(processCpu);
