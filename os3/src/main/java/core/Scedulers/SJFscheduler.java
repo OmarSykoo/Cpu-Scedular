@@ -22,9 +22,6 @@ public class SJFscheduler extends CpuSceduler{
         sjfprocess.sort(Comparator.comparingInt((ProcessCpu p) -> p.BurstTime).thenComparingInt(p -> p.ArrivalTime));
         int time = 0;
         for(ProcessCpu p : sjfprocess) {
-            if(time < p.ArrivalTime) {
-                time = p.ArrivalTime;
-            }
             SjfIntervalCpu iCpu = new SjfIntervalCpu();
             iCpu.startTime = time;
             iCpu.Pnum = p.PNum;
