@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import core.ProcessCpu;
 import core.IntervalLists.IntervalList;
+import core.Scedulers.PrioritySceduler;
 import core.Scedulers.SJFscheduler;
 import gui.DisplayService;
 
@@ -67,7 +68,7 @@ public class Main {
                     // add srtf later
                     break;
                 case 3:
-                    // add priority later
+                    intervals = new PrioritySceduler(processCpus).Simulate();
                     break;
                 case 4:
                     // add fcai factor

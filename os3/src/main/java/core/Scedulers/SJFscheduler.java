@@ -2,7 +2,6 @@ package core.Scedulers;
 
 import core.IntervalLists.IntervalList;
 import core.IntervalLists.SjfIntervalList;
-import core.IntevalCpus.IntervalCpu;
 import core.IntevalCpus.SjfIntervalCpu;
 
 import java.util.Comparator;
@@ -11,7 +10,7 @@ import java.util.LinkedList;
 
 import core.ProcessCpu;
 
-public class SJFscheduler extends CpuSceduler{
+public class SJFscheduler extends CpuSceduler {
     private IntervalList iList;
     private LinkedList<ProcessCpu> sjfprocess;
 
@@ -25,16 +24,16 @@ public class SJFscheduler extends CpuSceduler{
     public IntervalList Simulate() {
         LinkedList<ProcessCpu> Q = new LinkedList<>();
         int time = 0;
-        while(!Q.isEmpty() || !sjfprocess.isEmpty()) {
+        while (!Q.isEmpty() || !sjfprocess.isEmpty()) {
             Iterator<ProcessCpu> iterator = sjfprocess.iterator();
-            while(iterator.hasNext()) {
+            while (iterator.hasNext()) {
                 ProcessCpu pcpu = iterator.next();
-                if(pcpu.ArrivalTime <= time){
+                if (pcpu.ArrivalTime <= time) {
                     Q.add(pcpu);
                     iterator.remove();
                 }
             }
-            if(Q.isEmpty()) {
+            if (Q.isEmpty()) {
                 Q.add(sjfprocess.getFirst());
                 time = sjfprocess.getFirst().ArrivalTime;
                 sjfprocess.remove();
@@ -52,7 +51,5 @@ public class SJFscheduler extends CpuSceduler{
         }
         return iList;
     }
-
-    
 
 }
