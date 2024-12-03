@@ -29,7 +29,7 @@ public class Main {
         String[] TestInput = new String[] {
                 "17 0 4 4",
                 "6 3 9 3",
-                "10 4 3 5",
+                "3 4 3 5",
                 "4 29 8 2" };
         for (int i = 0; i < TestInput.length; i++) {
             String[] inpuStrings = TestInput[i].split(" ");

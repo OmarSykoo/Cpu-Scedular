@@ -60,7 +60,7 @@ public class DisplayService extends Application {
         yAxis.setLabel("Tasks");
 
         GanttChart<Number, String> ganttChart = new GanttChart<>(xAxis, yAxis);
-        ganttChart.setBlockHeight(40);
+        ganttChart.setBlockHeight(60);
         GanttChart.Series<Number, String> series = new GanttChart.Series<>();
 
         for (IntervalCpu interval : intervals) {
