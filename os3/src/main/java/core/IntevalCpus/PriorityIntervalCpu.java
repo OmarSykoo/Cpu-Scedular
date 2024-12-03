@@ -5,7 +5,7 @@ public class PriorityIntervalCpu extends IntervalCpu {
 
     @Override
     public void Print() {
-        String formattedString = String.format("%-5d | P%-5d | %-14d | %-14d | %-8d | %-14s | %-12d | %-14d",
+        String formattedString = String.format("%-4d | P%-6d | %-13d | %-13d | %-9d | %-13s | %-11d | %-13d",
                 startTime,
                 Pnum,
                 endTime - startTime,
