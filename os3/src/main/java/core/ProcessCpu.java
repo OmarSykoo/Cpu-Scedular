@@ -6,5 +6,4 @@ public class ProcessCpu {
     public int ArrivalTime;
     public int Priority;
     public int Quantum;
-
 }
