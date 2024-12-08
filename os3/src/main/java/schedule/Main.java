@@ -10,6 +10,14 @@ import core.Scedulers.SJFscheduler;
 import gui.DisplayService;
 
 public class Main {
+    private static LinkedList<ProcessCpu> copyProcess(LinkedList<ProcessCpu> process) {
+        LinkedList<ProcessCpu> processCpus = new LinkedList<ProcessCpu>();
+        for (ProcessCpu proc : process) {
+            processCpus.add(new ProcessCpu(proc));
+        }
+        return processCpus;
+    }
+
     public static void main(String[] args) {
         LinkedList<ProcessCpu> processCpus = new LinkedList<ProcessCpu>();
         Scanner scanner = new Scanner(System.in);
@@ -62,13 +70,13 @@ public class Main {
                     exitFlag = true;
                     break;
                 case 1:
-                    intervals = new SJFscheduler(processCpus).Simulate();
+                    intervals = new SJFscheduler(copyProcess(processCpus)).Simulate();
                     break;
                 case 2:
                     // add srtf later
                     break;
                 case 3:
-                    intervals = new PrioritySceduler(processCpus).Simulate();
+                    intervals = new PrioritySceduler(copyProcess(processCpus)).Simulate();
                     break;
                 case 4:
                     // add fcai factor
