@@ -7,6 +7,7 @@ import core.ProcessCpu;
 import core.IntervalLists.IntervalList;
 import core.Scedulers.PrioritySceduler;
 import core.Scedulers.SJFscheduler;
+import core.Scedulers.SrtfScheduler;
 import gui.DisplayService;
 
 public class Main {
@@ -73,7 +74,9 @@ public class Main {
                     intervals = new SJFscheduler(copyProcess(processCpus)).Simulate();
                     break;
                 case 2:
-                    // add srtf later
+                   System.out.print("Enter context switching time: ");
+                    int contextSwitching = Integer.parseInt(scanner.nextLine());
+                    intervals = new SrtfScheduler(copyProcess(processCpus), contextSwitching).Simulate();
                     break;
                 case 3:
                     intervals = new PrioritySceduler(copyProcess(processCpus)).Simulate();
