@@ -101,7 +101,7 @@ public class DisplayService extends Application {
                 TableView<ProcessTableViewer> processTable = new TableView<>();
                 processTable.setPrefSize(300, 858);
 
-                TableColumn<ProcessTableViewer, Integer> pNumColumn = new TableColumn<>("Process");
+                TableColumn<ProcessTableViewer, Integer> pNumColumn = new TableColumn<>("Process Number");
                 pNumColumn.setCellValueFactory(new PropertyValueFactory<>("PNum"));
 
                 TableColumn<ProcessTableViewer, String> colorColumn = new TableColumn<>("Color");

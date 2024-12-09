@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import core.ProcessCpu;
 import core.IntervalLists.IntervalList;
+import core.Scedulers.FCAIScheduler;
 import core.Scedulers.PrioritySceduler;
 import core.Scedulers.SJFscheduler;
 import core.Scedulers.SrtfScheduler;
@@ -37,9 +38,9 @@ public class Main {
         // processCpus.add(processCpu);
         // }
         String[] TestInput = new String[] {
-                "17 4 4 4",
+                "17 0 4 4",
                 "6 3 9 3",
-                "3 4 3 5",
+                "10 4 3 5",
                 "4 29 8 2" };
         for (int i = 0; i < TestInput.length; i++) {
             String[] inpuStrings = TestInput[i].split(" ");
@@ -82,7 +83,7 @@ public class Main {
                     intervals = new PrioritySceduler(copyProcess(processCpus)).Simulate();
                     break;
                 case 4:
-                    // add fcai factor
+                    intervals = new FCAIScheduler(processCpus).Simulate();
                     break;
                 default:
                     InvalidInput = true;
