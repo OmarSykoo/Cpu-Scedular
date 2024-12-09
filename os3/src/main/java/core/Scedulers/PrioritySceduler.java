@@ -20,7 +20,7 @@ public class PrioritySceduler extends CpuSceduler {
     public IntervalList Simulate() {
         process.sort(Comparator.comparingInt((ProcessCpu p) -> p.ArrivalTime));
 
-        int currentTime = 0, arrivalTime = 0, burstTime = 0;
+        int currentTime = 0, arrivalTime = 0, burstTime = 0, contextSwitchTime = 1;
         while (!process.isEmpty()) {
             ProcessCpu highestPriorityProcess = null;
             for (ProcessCpu pro : process) {
@@ -46,11 +46,13 @@ public class PrioritySceduler extends CpuSceduler {
             intervalCpu.turnAroundTime = intervalCpu.endTime - arrivalTime;
             intervalCpu.waitingTime = intervalCpu.turnAroundTime - burstTime;
 
-
             currentTime = intervalCpu.endTime;
 
             intervals.add(intervalCpu);
             process.remove(highestPriorityProcess);
+
+            if(!process.isEmpty())
+                currentTime += contextSwitchTime;
         }
 
         float avgWaiting = 0, avgTurnAround = 0;
