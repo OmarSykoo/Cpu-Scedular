@@ -22,8 +22,12 @@ public class SJFscheduler extends CpuSceduler {
         this.sjfprocess = new LinkedList<>(process);
     }
 
+    private static final int AGING_THRESHOLD = 10;
+    private static final float AGING_FACTOR = 0.2f;
+
     @Override
     public IntervalList Simulate() {
+        
         LinkedList<ProcessCpu> Q = new LinkedList<>();
         Map<ProcessCpu, Integer> agingFactors = new HashMap<>();
         int time = 0;
@@ -42,20 +46,40 @@ public class SJFscheduler extends CpuSceduler {
                 time = sjfprocess.peek().ArrivalTime;
                 continue;
             }
-            for(ProcessCpu proc : Q) {
-                agingFactors.put(proc, agingFactors.get(proc) + 1);
+
+            ProcessCpu selectedProcess = null;
+            int minAdjustedBurstTime = Integer.MAX_VALUE;
+
+            for (ProcessCpu process : Q) {
+                int waitingTime = time - process.ArrivalTime;
+                int adjustedBurstTime = process.BurstTime;
+
+                if (waitingTime >= AGING_THRESHOLD) {
+                    float agingAdjustment = (waitingTime - AGING_THRESHOLD) * AGING_FACTOR;
+                    adjustedBurstTime = Math.max(1, (int) (process.BurstTime - agingAdjustment));
+                }
+
+                if (adjustedBurstTime < minAdjustedBurstTime) {
+                    minAdjustedBurstTime = adjustedBurstTime;
+                    selectedProcess = process;
+                }
             }
-            ProcessCpu shortestBurst = Q.stream().min(Comparator.comparingInt(proc -> (proc.BurstTime - agingFactors.get(proc)))).orElseThrow();
+
+            ProcessCpu shortestBurst = selectedProcess;
             Q.remove(shortestBurst);
             SjfIntervalCpu iCpu = new SjfIntervalCpu();
             iCpu.startTime = time;
-            iCpu.waitingTime = time - shortestBurst.ArrivalTime - shortestBurst.BurstTime;
+            iCpu.waitingTime = time - shortestBurst.ArrivalTime ;
             if(iCpu.waitingTime < 0 ) {
                 iCpu.waitingTime = 0;
             }
-            iCpu.turnAroundTime = time - shortestBurst.ArrivalTime;
-            iCpu.Pnum = shortestBurst.PNum;
             iCpu.endTime = time + shortestBurst.BurstTime;
+            iCpu.turnAroundTime = iCpu.endTime - shortestBurst.ArrivalTime;
+            if(iCpu.turnAroundTime <= 0) {
+                iCpu.turnAroundTime = shortestBurst.BurstTime;
+            }
+            iCpu.Pnum = shortestBurst.PNum;
+            
             iList.add(iCpu);
             time += shortestBurst.BurstTime;
             agingFactors.remove(shortestBurst);

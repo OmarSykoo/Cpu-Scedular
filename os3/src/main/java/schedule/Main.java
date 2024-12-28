@@ -83,7 +83,7 @@ public class Main {
                     intervals = new PrioritySceduler(copyProcess(processCpus)).Simulate();
                     break;
                 case 4:
-                    intervals = new FCAIScheduler(processCpus).Simulate();
+                    intervals = new FCAIScheduler(copyProcess(processCpus)).Simulate();
                     break;
                 default:
                     InvalidInput = true;

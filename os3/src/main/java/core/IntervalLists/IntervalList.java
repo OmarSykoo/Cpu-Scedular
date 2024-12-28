@@ -17,7 +17,7 @@ public abstract class IntervalList extends LinkedList<IntervalCpu> {
         }
         System.out.println();
         for(IntervalCpu interval : this) {
-            if(interval.turnAroundTime != 0){
+            if(interval.turnAroundTime != 0 && interval.waitingTime >= 0){
                 System.out.println("P" + interval.Pnum + " Waiting Time" + " -> " + interval.waitingTime);
                 System.out.println("P" + interval.Pnum + " TurnAround Time" + " -> " + interval.turnAroundTime);
                 System.out.println();
