@@ -9,12 +9,31 @@ import core.IntevalCpus.SrtfIntervalCpu;
 public class SrtfScheduler extends CpuSceduler {
     private SrtfIntervalList intervals;
     private int contextSwitching;
+    private static final double AGING_FACTOR = 0.1; // Reduces priority by 10% for each time unit waited
 
     public SrtfScheduler(LinkedList<ProcessCpu> process, int contextSwitching) {
         super(process);
         this.contextSwitching = contextSwitching;         
         this.intervals = new SrtfIntervalList();     
     }      
+
+    private static class ProcessWithAge {
+        ProcessCpu process;
+        int waitingTime;
+        
+        ProcessWithAge(ProcessCpu process) {
+            this.process = process;
+            this.waitingTime = 0;
+        }
+
+        double getAdjustedBurstTime() {
+            return process.BurstTime * Math.max(0.1, 1.0 - (waitingTime * AGING_FACTOR));
+        }
+
+        void incrementWaitingTime() {
+            waitingTime++;
+        }
+    }
 
     @Override     
     public IntervalList Simulate() {         
@@ -25,16 +44,22 @@ public class SrtfScheduler extends CpuSceduler {
 
         process.sort(Comparator.comparingInt(p -> p.ArrivalTime));          
 
-        PriorityQueue<ProcessCpu> readyQueue = new PriorityQueue<>(             
-            Comparator.comparingInt(p -> p.BurstTime)        
+        PriorityQueue<ProcessWithAge> readyQueue = new PriorityQueue<>(             
+            Comparator.comparingDouble(ProcessWithAge::getAdjustedBurstTime)        
         );          
 
         int currentTime = 0;
         int contextSwitchTime = 0;          
 
-        while (!process.isEmpty() || !readyQueue.isEmpty()) {             
-            while (!process.isEmpty() && process.peek().ArrivalTime <= currentTime) {                 
-                readyQueue.add(process.poll());             
+        LinkedList<ProcessWithAge> waitingProcesses = new LinkedList<>();
+        for (ProcessCpu p : process) {
+            waitingProcesses.add(new ProcessWithAge(p));
+        }
+
+        while (!waitingProcesses.isEmpty() || !readyQueue.isEmpty()) {             
+            // Add newly arrived processes to ready queue
+            while (!waitingProcesses.isEmpty() && waitingProcesses.peek().process.ArrivalTime <= currentTime) {                 
+                readyQueue.add(waitingProcesses.poll());             
             }              
 
             if (readyQueue.isEmpty()) {                 
@@ -42,23 +67,26 @@ public class SrtfScheduler extends CpuSceduler {
                 continue;             
             }              
 
-            ProcessCpu currentProcess = readyQueue.poll();           
+            // Update waiting time for all processes in ready queue except the current one
+            for (ProcessWithAge p : readyQueue) {
+                p.incrementWaitingTime();
+            }
+
+            ProcessWithAge currentProcess = readyQueue.poll();           
             SrtfIntervalCpu interval = new SrtfIntervalCpu();              
 
             interval.startTime = currentTime + contextSwitchTime;             
-            interval.Pnum = currentProcess.PNum;              
+            interval.Pnum = currentProcess.process.PNum;              
 
-            int executedTime = 0;             
             boolean preempted = false;              
 
-            while (currentProcess.BurstTime > 0) {                 
+            while (currentProcess.process.BurstTime > 0) {                 
                 currentTime++;                 
-                executedTime++;                 
-                currentProcess.BurstTime--;                  
+                currentProcess.process.BurstTime--;                  
 
-                while (!process.isEmpty() && process.peek().ArrivalTime <= currentTime) {                     
-                    ProcessCpu newProcess = process.poll();                     
-                    if (newProcess.BurstTime < currentProcess.BurstTime) {                         
+                while (!waitingProcesses.isEmpty() && waitingProcesses.peek().process.ArrivalTime <= currentTime) {                     
+                    ProcessWithAge newProcess = waitingProcesses.poll();                     
+                    if (newProcess.getAdjustedBurstTime() < currentProcess.getAdjustedBurstTime()) {                         
                         readyQueue.add(newProcess);                         
                         preempted = true;                         
                         break;                     
@@ -70,14 +98,15 @@ public class SrtfScheduler extends CpuSceduler {
                 if (preempted) break;             
             }              
 
+            // Rest of the implementation remains the same...
             interval.endTime = currentTime;             
-            interval.RemainingBurstTime = currentProcess.BurstTime;             
+            interval.RemainingBurstTime = currentProcess.process.BurstTime;             
             interval.ActionDetail = preempted                     
-                ? "Preempted by P" + (readyQueue.peek() != null ? readyQueue.peek().PNum : "N/A")                     
+                ? "Preempted by P" + (readyQueue.peek() != null ? readyQueue.peek().process.PNum : "N/A")                     
                 : "Process completed";              
 
             ProcessCpu originalProcess = originalProcesses.stream()
-                .filter(p -> p.PNum == currentProcess.PNum)
+                .filter(p -> p.PNum == currentProcess.process.PNum)
                 .findFirst()
                 .orElseThrow();
 
@@ -86,13 +115,14 @@ public class SrtfScheduler extends CpuSceduler {
 
             intervals.add(interval);              
 
-            if (preempted && currentProcess.BurstTime > 0) {                 
+            if (preempted && currentProcess.process.BurstTime > 0) {                 
                 readyQueue.add(currentProcess);             
             }              
 
             contextSwitchTime = preempted ? contextSwitching : 0;         
         }          
 
+        // Calculate averages
         float avgWaitingTime = 0, avgTurnAroundTime = 0;         
         for (var it : intervals) {             
             avgWaitingTime += it.waitingTime;             
@@ -103,4 +133,4 @@ public class SrtfScheduler extends CpuSceduler {
 
         return intervals;     
     } 
-} 
+}
