@@ -15,6 +15,14 @@ public abstract class IntervalList extends LinkedList<IntervalCpu> {
         for (IntervalCpu interval : this) {
             interval.Print();
         }
+        System.out.println();
+        for(IntervalCpu interval : this) {
+            if(interval.turnAroundTime != 0){
+                System.out.println("P" + interval.Pnum + " Waiting Time" + " -> " + interval.waitingTime);
+                System.out.println("P" + interval.Pnum + " TurnAround Time" + " -> " + interval.turnAroundTime);
+                System.out.println();
+            }
+        }
         System.out.println(String.format("AWT : %.2f , ATAT : %.2f", averageWaitingTime, averageTurnAroundTime));
     }
 }
