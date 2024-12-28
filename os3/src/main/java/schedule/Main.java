@@ -23,35 +23,20 @@ public class Main {
     public static void main(String[] args) {
         LinkedList<ProcessCpu> processCpus = new LinkedList<ProcessCpu>();
         Scanner scanner = new Scanner(System.in);
-        // System.out.print("Enter number of processes : ");
-        // enter the number of process to be taken from user
-        // int x = Integer.parseInt(scanner.nextLine());
-        // System.out.println("Enter : arrivalTime burstTime priority quantum");
-        // for (int i = 1; i <= x; i++) {
-        // String[] inpuStrings = scanner.nextLine().split(" ");
-        // ProcessCpu processCpu = new ProcessCpu();
-        // processCpu.PNum = i;
-        // processCpu.ArrivalTime = Integer.parseInt(inpuStrings[0]);
-        // processCpu.BurstTime = Integer.parseInt(inpuStrings[1]);
-        // processCpu.Priority = Integer.parseInt(inpuStrings[2]);
-        // processCpu.Quantum = Integer.parseInt(inpuStrings[3]);
-        // processCpus.add(processCpu);
-        // }
-        String[] TestInput = new String[] {
-                "17 0 4 4",
-                "6 3 9 3",
-                "10 4 3 5",
-                "4 29 8 2" };
-        for (int i = 0; i < TestInput.length; i++) {
-            String[] inpuStrings = TestInput[i].split(" ");
+        System.out.print("Enter number of processes : ");
+        int x = Integer.parseInt(scanner.nextLine());
+        System.out.println("Enter : burstTime arrivalTime priority quantum");
+        for (int i = 1; i <= x; i++) {
+            String[] inpuStrings = scanner.nextLine().split(" ");
             ProcessCpu processCpu = new ProcessCpu();
-            processCpu.PNum = i + 1;
+            processCpu.PNum = i;
             processCpu.BurstTime = Integer.parseInt(inpuStrings[0]);
             processCpu.ArrivalTime = Integer.parseInt(inpuStrings[1]);
             processCpu.Priority = Integer.parseInt(inpuStrings[2]);
             processCpu.Quantum = Integer.parseInt(inpuStrings[3]);
             processCpus.add(processCpu);
         }
+
         while (true) {
             System.out.println("1) SJF SCHEDULER");
             System.out.println("2) SRTF SCHEDULER");
@@ -75,7 +60,7 @@ public class Main {
                     intervals = new SJFscheduler(copyProcess(processCpus)).Simulate();
                     break;
                 case 2:
-                   System.out.print("Enter context switching time: ");
+                    System.out.print("Enter context switching time: ");
                     int contextSwitching = Integer.parseInt(scanner.nextLine());
                     intervals = new SrtfScheduler(copyProcess(processCpus), contextSwitching).Simulate();
                     break;
