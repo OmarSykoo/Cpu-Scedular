@@ -23,9 +23,9 @@ public class Main {
     public static void main(String[] args) {
         LinkedList<ProcessCpu> processCpus = new LinkedList<ProcessCpu>();
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter number of processes : ");
+        System.out.print("Enter number of processes: ");
         int x = Integer.parseInt(scanner.nextLine());
-        System.out.println("Enter : burstTime arrivalTime priority quantum");
+        System.out.println("Enter: Burst Time Arrival Time Priority Quantum");
         for (int i = 1; i <= x; i++) {
             String[] inpuStrings = scanner.nextLine().split(" ");
             ProcessCpu processCpu = new ProcessCpu();
